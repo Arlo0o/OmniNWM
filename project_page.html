@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="ORV: 4D Occupancy-centric Robot Video Generation">
+  <meta property="og:title" content="SOCIAL MEDIA TITLE TAG" />
+  <meta property="og:description" content="SOCIAL MEDIA DESCRIPTION TAG TAG" />
+  <meta property="og:url" content="URL OF THE WEBSITE" />
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+  <meta property="og:image" content="static/image/your_banner_image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+
+  <meta name="twitter:title" content="TWITTER BANNER TITLE META TAG">
+  <meta name="twitter:description" content="TWITTER BANNER DESCRIPTION META TAG">
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <meta name="twitter:image" content="static/images/your_twitter_banner_image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="KEYWORDS SHOULD BE PLACED HERE">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MX3KXSWCZC"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-MX3KXSWCZC');
+  </script>
+
+  <title>OmniNWM</title>
+  <link rel="icon" type="image/x-icon" href="assets/images/omninwm.png">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/main.css">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <!-- <link rel="stylesheet" href="static/css/index.css"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+
+
+ 
+  <style>
+    /* 导航栏样式 */
+    .main-navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      padding: 15px 0;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-container {
+      display: flex;
+      max-width: 1200px;
+      width: 100%;
+      padding: 0 20px;
+    }
+    
+    .nav-logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #3273dc;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .nav-menu {
+      display: flex;
+      margin-left: auto;
+      align-items: center;
+    }
+    
+    .nav-link {
+      margin: 0 12px;
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 8px 12px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      background: #f0f0f0;
+      color: #3273dc;
+    }
+    
+    .nav-link.active {
+      background: #3273dc;
+      color: white;
+    }
+    
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    
+    /* 内容部分添加锚点偏移 */
+    .section-anchor {
+      scroll-margin-top: 80px;
+    }
+    
+    /* 回到顶部按钮 */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: #3273dc;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .back-to-top.show {
+      opacity: 1;
+    }
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        background: white;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        transform: translateY(-150%);
+        transition: transform 0.3s ease;
+      }
+      
+      .nav-menu.open {
+        transform: translateY(0);
+      }
+      
+      .nav-link {
+        margin: 8px 0;
+        width: 100%;
+      }
+      
+      .mobile-menu-btn {
+        display: block;
+        margin-left: auto;
+      }
+    }
+
+      /* 添加视频网格样式 */
+      .video_comparison_1 {
+        display: grid;
+        /*grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));*/
+        /*gap: 15px;*/
+        width: 100%;
+        margin: 0 auto;
+        /*max-width: 1400px;*/ /* 可选最大宽度 */
+      }
+      
+      .video_wrapper {
+        position: relative;
+        width: 100%;
+        /*padding-bottom: 56.25%; */  /* 16:9 宽高比 */
+        overflow: hidden;
+      }
+      
+      .video_container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      
+      .video_container video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /*border-radius: 8px; */
+        background-color: #000;
+        transition: transform 0.3s ease; /* 可选悬停效果 */
+      }
+      
+      /* 可选悬停效果 */
+      .video_container video:hover {
+        transform: scale(1.05);
+      }
+    </style>
+ 
+
+</head>
+
+<body>
+
+  <!-- 导航栏 -->
+  <nav class="main-navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">OmniNWM</a>
+      
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <div class="nav-menu" id="navMenu">
+        <a href="#abstract" class="nav-link">Abstract</a>
+        <a href="#long-term-generation" class="nav-link">Long-term Navigation</a>
+        <a href="#trajectory-control" class="nav-link">Trajectory Control</a>
+        <a href="#semantic-occupancy" class="nav-link">3D Semantic Occupancy</a>
+        <a href="#zero-shot-generalization" class="nav-link">Zero-shot Generalization</a>
+        <a href="#diverse-generation" class="nav-link">Diverse Generation</a>
+        <a href="#bibtex_title" class="nav-link">BibTeX</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- 回到顶部按钮 -->
+  <div class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+              <h2 class="title is-3 publication-title" style="width: 100%;">
+                <br>
+                <br>
+                OmniNWM: Omniscient Navigation World Models for Autonomous Driving
+              </h2>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+              <!-- <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=zh-CN&user=V-YdQiAAAAAJ" target="_blank">Bohan Li</a><sup>1,2*</sup>,</span>
+               <span class="author-block">
+                <a href="https://github.com/Ma-Zhuang" target="_blank">Zhuang Ma</a><sup>3*#</sup>,</span>
+
+                <span class="author-block"></span>
+                <a href="" target="_blank">Zhujin Liang</a><sup>3</sup>,</span>
+
+                <span class="author-block">
+                  <a href="" target="_blank">Baorui Peng</a><sup>2</sup>,</span>
+
+                <span class="author-block">
+                <a href="" target="_blank">Zhenqiang Liu</a><sup>3</sup>,</span>
+
+
+                <span class="author-block">
+                <a href="" target="_blank">Dalong Du</a><sup>3</sup>,</span>
+                <br>
+                <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=zh-CN&user=syoPhv8AAAAJ" target="_blank">Chao Ma</a><sup>1</sup>,</span>
+                <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=zh-CN&user=s_kbB4oAAAAJ" target="_blank">Yueming Jin</a><sup>4</sup>,</span>
+              
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?hl=zh-CN&user=ygQznUQAAAAJ" target="_blank">Hao Zhao</a><sup>5</sup>,</sup>  
+
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=_cUfvYQAAAAJ&hl=zh-CN" target="_blank">Wenjun Zeng</a><sup>2</sup>,</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?hl=zh-CN&user=byaSC-kAAAAJ" target="_blank">Xin Jin</a><sup>2†</sup></span>
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><sup>1</sup>SJTU,</span>
+              <span class="author-block"><sup>2</sup>EIT(Ningbo),</span>
+              <span class="author-block"><sup>3</sup>PhiGent,</span>
+              <span class="author-block"><sup>4</sup>NUS,</span>
+              <span class="author-block"><sup>5</sup>THU,</span>
+              <span class="author-block"><sup>*</sup>Equal Contribution</span>
+              <span class="author-block"><sup>#</sup>Project Leader</span>
+              <span class="author-block"><sup>†</sup>Corresponding</span>
+            </div> -->
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="" target="_blank"   
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+
+                <!-- <span class="link-block">
+                  <a href="https://github.com/Arlo0o/OmniNWM" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span> -->
+
+                <span class="link-block">
+                  <a href="https://github.com/Ma-Zhuang/OmniNWM" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Teaser image -->
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <img src="assets/images/overall.png" alt="Teaser Image" style="max-width: 100%; height: auto;">
+        <h2 class="subtitle is-size-6 has-text-centered">
+          We introduce OminiNWM, a comprehensive navigation world model that simultaneously forecasts panoramic RGB, semantic, metric depth, 3D semantic occupancy videos, and future planning trajectories for autonomous driving.
+        </h2>
+      </div>
+    </div>
+  </section>
+  <!-- End teaser image -->
+
+ 
+
+  <!-- Paper abstract -->
+  <section class="section hero is-light" id="abstract">
+    <div class="container is-max-desktop" style="width: 90%;">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Autonomous driving world models are expected to excel simultaneously in three core dimensions of state, action, and reward. Existing models, however, are typically restricted to limited state modalities confined to short video sequences, imprecise action control, and a lack of reward-aware evaluation. In this paper, we introduce OmniNWM, an omniscient panoramic navigation world model that addresses all three dimensions within a unified framework. For <b>state</b>, OmniNWM jointly generates panoramic RGB, semantic, metric depth, and 3D occupancy videos. A flexible forcing strategy enables stable long-horizon auto-regressive generation. For <b>action</b>, we introduce a normalized panoramic plücker ray-map representation that interprets input trajectories into pixel-level signals, enabling highly precise and generalized control over panoramic video generation. Regarding <b>reward</b>, we move beyond learning reward functions with external models: instead, we leverage jointly generated 3D occupancy to straightforwardly define rule-based dense rewards for driving compliance and safety. Extensive experiments demonstrate that OmniNWM achieves state-of-the-art performance in video generation, control accuracy, and long-horizon stability, while providing a reliable closed-loop evaluation framework through occupancy-based rewards.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End paper abstract -->
+ 
+
+</div>
+  
+<section class="section hero is-light section-anchor" id="long-term-generation">
+  <div class="container" style="width: 100vw;">
+    <br>
+    <h2 class="title is-3 has-text-centered">Long-term Navigation</h2>
+    <p></p>
+    <h4 class="subtitle has-text-centered">Examples of Long-term Generative Navigation with VLA Future Planning (Beyond GT Length) </h4>
+    <!-- <p class="has-text-centered">All videos are displayed at the resolution of 448&times;4212, regardless of their original resolutions, which may result in varying visual quality. -->
+    <!-- </p> -->
+    <br>
+  </div>
+</section>
+
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 100%">
+
+<p class="has-text-centered">Long-term Navigation Scenario 1
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <!-- <video autoplay  muted  playsinline loop controls> -->
+      <video autoplay="" muted="" playsinline="" loop="">
+        <source src="assets/videos/long/iter_000046.mp4" type="video/mp4">
+    </video>
+    <!-- <div class="overlay"><br>321 Frames<br></div> -->
+  </div>
+</div>
+
+
+<p class="has-text-centered">Long-term Navigation Scenario 2 
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/long/iter_000027.mp4" type="video/mp4">
+      </video>
+      <!-- <div class="overlay"><br>321 Frames<br></div> -->
+    </div>
+</div>
+
+
+<p class="has-text-centered">Long-term Navigation Scenario 3 
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/long/iter_000002.mp4" type="video/mp4">
+      </video>
+      <!-- <div class="overlay"><br>321 Frames<br></div> -->
+    </div>
+  </div>
+
+
+<p class="has-text-centered">Long-term Navigation Scenario 4
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/long/iter_000062.mp4" type="video/mp4">
+      </video>
+      <!-- <div class="overlay"><br>321 Frames<br></div> -->
+    </div>
+  </div>
+
+
+<p class="has-text-centered">Long-term Navigation Scenario 5
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/long/iter_000049.mp4" type="video/mp4">
+      </video>
+      <!-- <div class="overlay"><br>321 Frames<br></div> -->
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
+<section class="section hero is-light section-anchor" id="trajectory-control">
+  <div class="container" style="width: 100vw;">
+    <br>
+    <h2 class="title is-3 has-text-centered">Trajectory Control</h2>
+    <p></p>
+    <h4 class="subtitle has-text-centered">Examples of Out-of-distribution Trajectory Control with the Same Conditional Frame</h4>
+    <!-- <p class="has-text-centered">All videos are displayed at the resolution of 448&times;4212, regardless of their original resolutions, which may result in varying visual quality. -->
+    </p>
+    <!-- <br> -->
+  </div>
+</section>
+
+
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+  <p class="has-text-centered">Trajectory Control Scenario 1
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/control/teaser_aj.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</div>
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 100%; margin-top: 30px;">
+  <p class="has-text-centered">Trajectory Control Scenario 2
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/control/traj_control1.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</div>
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 100%; margin-top: 30px;">
+  <p class="has-text-centered">Trajectory Control Scenario 3
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/control/traj_control2.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</div>
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 100%; margin-top: 30px;">
+  <p class="has-text-centered">Trajectory Control Scenario 4
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/control/traj_control3.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 100%; margin-top: 30px;">
+  <p class="has-text-centered">Trajectory Control Scenario 5
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/control/traj_control6.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</div>
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 100%; margin-top: 30px;">
+  <p class="has-text-centered">Trajectory Control: Reversing
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/control/reversing.mp4" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</div>
+
+
+
+<section class="section hero is-light section-anchor" id="semantic-occupancy">
+  <div class="container" style="width: 100%;">
+    <br>
+    <h2 class="title is-3 has-text-centered">3D Semantic Occupancy</h2>
+    <p></p>
+    <h4 class="subtitle has-text-centered">Examples of Diverse Generated Scenarios with 3D Semantic Occupancy</h4>
+    <!-- <p class="has-text-centered">All videos are displayed at the resolution of 448&times;4212, regardless of their original resolutions, which may result in varying visual quality. -->
+    </p>
+    <!-- <br> -->
+  </div>
+</section>
+
+
+ 
+<div class="video_comparison_1" id="video_grid" style="width: 80%">
+
+  <p class="has-text-centered">3D Semantic Occupancy Scenario 1
+    <div class="video_wrapper" style="width: 100%;">
+      <div class="video_container">
+        <!-- <video autoplay  muted  playsinline loop controls> -->
+          <video autoplay="" muted="" playsinline="" loop="">
+            <source src="assets/videos/occ/occ_051.mp4" type="video/mp4">
+        </video>
+        <!-- <div class="overlay"><br> Frames<br></div> -->
+      </div>
+    </div>
+     
+      
+  <p class="has-text-centered">3D Semantic Occupancy Scenario 2
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <!-- <video autoplay  muted  playsinline loop controls> -->
+        <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/occ/occ_053.mp4" type="video/mp4">
+      </video>
+      <!-- <div class="overlay"><br>321 Frames<br></div> -->
+    </div>
+  </div>
+   
+  <p class="has-text-centered">3D Semantic Occupancy Scenario3
+    <div class="video_wrapper" style="width: 100%;">
+      <div class="video_container">
+        <!-- <video autoplay  muted  playsinline loop controls> -->
+          <video autoplay="" muted="" playsinline="" loop="">
+            <source src="assets/videos/occ/occ_034.mp4" type="video/mp4">
+        </video>
+        <!-- <div class="overlay"><br>321 Frames<br></div> -->
+      </div>
+    </div>
+  
+  </div>
+  
+
+
+
+<section class="section hero is-light section-anchor" id="zero-shot-generalization">
+  <div class="container" style="width: 100vw;">
+    <br>
+    <h2 class="title is-3 has-text-centered">Zero-shot Generalization</h2>
+    <p></p>
+    <h4 class="subtitle has-text-centered">Examples of Zero-shot Generalization on Different Datasets and Camera View Configures </h4>
+    <!-- <p class="has-text-centered">All videos are displayed at the resolution of 448&times;4212, regardless of their original resolutions, which may result in varying visual quality. -->
+    <!-- </p> -->
+    <br>
+  </div>
+</section>
+
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 100%">
+
+<p class="has-text-centered">Nuplan 3 Camera Views
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <!-- <video autoplay  muted  playsinline loop controls> -->
+        <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/zero/nuplan_3v_iter_000000.mp4" type="video/mp4">
+      </video>
+      <!-- <div class="overlay"><br> Frames<br></div> -->
+    </div>
+  </div>
+   
+    
+<p class="has-text-centered">Nuplan 6 Camera Views
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <!-- <video autoplay  muted  playsinline loop controls> -->
+      <video autoplay="" muted="" playsinline="" loop="">
+        <source src="assets/videos/zero/nuplan_6v_iter_000000.mp4" type="video/mp4">
+    </video>
+    <!-- <div class="overlay"><br>321 Frames<br></div> -->
+  </div>
+</div>
+
+<p class="has-text-centered">In-House Collected Dataset Scenario 1
+  <div class="video_wrapper" style="width: 100%;">
+    <div class="video_container">
+      <!-- <video autoplay  muted  playsinline loop controls> -->
+        <video autoplay="" muted="" playsinline="" loop="">
+          <source src="assets/videos/zero/iter_000017.mp4" type="video/mp4">
+      </video>
+      <!-- <div class="overlay"><br> Frames<br></div> -->
+    </div>
+  </div>
+   
+    
+<p class="has-text-centered">In-House Collected Dataset Scenario 2
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <!-- <video autoplay  muted  playsinline loop controls> -->
+      <video autoplay="" muted="" playsinline="" loop="">
+        <source src="assets/videos/zero/iter_000022.mp4" type="video/mp4">
+    </video>
+    <!-- <div class="overlay"><br>321 Frames<br></div> -->
+  </div>
+</div>
+
+
+
+</div>
+
+
+
+<section class="section hero is-light section-anchor" id="diverse-generation">
+  <div class="container" style="width: 100%;">
+    <br>
+    <h2 class="title is-3 has-text-centered">Diverse Generation</h2>
+    <p></p>
+    <h4 class="subtitle has-text-centered">Examples of Diverse Generated Samples with Pixel-level Alighed Panoramic RGB, Semantic and Depth Videos</h4>
+    <!-- <p class="has-text-centered">All videos are displayed at the resolution of 448&times;4212, regardless of their original resolutions, which may result in varying visual quality. -->
+    </p>
+    <!-- <br> -->
+  </div>
+</section>
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 1
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000089.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 2
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000092.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 3
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000001.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 4
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000002.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 5
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000004.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 6
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000014.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 7
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000035.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 8
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000044.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 9
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000051.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 10
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000052.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 11
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000055.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 12
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000070.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 13
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000088.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 14
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000099.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 15
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000115.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 16
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000117.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 17
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000121.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+
+
+<div class="video_comparison_1" id="video_grid" style="width: 70%">
+<p class="has-text-centered">Diverse Generation Scenario 18
+<div class="video_wrapper" style="width: 100%;">
+  <div class="video_container">
+    <video autoplay="" muted="" playsinline="" loop="">
+      <source src="assets/videos/diverse/iter_000125.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+</div>
+
+</div>
+
+
+  <!-- BibTeX -->
+  <!-- <section class="section section-anchor" id="bibtex_title">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+<pre><code>@article{,
+ 
+}</code></pre>
+    </div>
+  </section> -->
+
+
+  
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.main-navbar');
+      if (window.scrollY > 50) {
+        navbar.style.padding = '10px 0';
+        navbar.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.1)';
+      } else {
+        navbar.style.padding = '15px 0';
+        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+      }
+      
+      // 回到顶部按钮显示/隐藏
+      const backToTop = document.getElementById('backToTop');
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+      
+      // 高亮当前活动导航项
+      const sections = document.querySelectorAll('.section-anchor');
+      let currentSection = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 100) {
+          currentSection = section.getAttribute('id');
+        }
+      });
+      
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentSection}`) {
+          link.classList.add('active');
+        }
+      });
+    });
+    
+    // 回到顶部功能
+    document.getElementById('backToTop').addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    
+    // 移动端菜单切换
+    document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+      document.getElementById('navMenu').classList.toggle('open');
+    });
+    
+    // 点击导航链接时关闭移动菜单
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function() {
+        document.getElementById('navMenu').classList.remove('open');
+      });
+    });
+    
+    // 平滑滚动到锚点
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 70,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+
+  <!-- Statcounter tracking code -->
+
+  <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+  <!-- End of Statcounter Code -->
+
+</body>
+
+</html>
