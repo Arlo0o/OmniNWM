@@ -1,1 +1,1 @@
-## Page: https://github.com/Arlo0o/OmniNWM
+## Page: https://arlo0o.github.io/OmniNWM/
